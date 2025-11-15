@@ -43,13 +43,25 @@ git clone https://github.com/fabriziosalmi/proxmox-lxc-autoscale.git
 cd proxmox-lxc-autoscale/lxc_autoscale
 ```
 
-### Step 3: Build the Docker Image
+### Step 3: Configure Environment Variables (Optional)
+
+If you're using environment variables instead of YAML configuration, copy the example file and configure it:
+
+```bash
+cp .env.example .env
+nano .env  # Edit with your settings
+```
+
+> [!WARNING]
+> Never commit `.env` files containing passwords or sensitive information to version control.
+
+### Step 4: Build the Docker Image
 
 ```bash
 docker build -t lxc-autoscale .
 ```
 
-### Step 4: Edit the YAML Configuration
+### Step 5: Edit the YAML Configuration
 
 Modify the YAML configuration file (`lxc_autoscale.yaml`) with the Proxmox host SSH parameters and the required `use_remote_proxmox` option to make the application execute commands on remote hosts:
 
@@ -64,7 +76,7 @@ ssh_port: 22
 > [!TIP]
 > For better security, use SSH keys instead of passwords by setting `ssh_key_path` and leaving `ssh_password` empty.
   
-### Step 5: Run the Docker Container
+### Step 6: Run the Docker Container
 
 **Using the Default Configuration:**
 
@@ -80,7 +92,7 @@ docker run -d --name lxc_autoscale \
   lxc-autoscale
 ```
 
-### Step 6: Check Docker Logs
+### Step 7: Check Docker Logs
 
 ```bash
 docker logs lxc_autoscale
