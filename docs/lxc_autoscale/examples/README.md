@@ -15,7 +15,7 @@ This collection provides optimized configuration files for popular self-hosted a
 >     minimum amount of memory (in MB) that can be reduced in a single scaling operation
 > 
 > - `reserve_cpu_percent` and `reserve_memory_mb`
->     % of CPU and MB of memory reserved for Proxmox to maintain system stability and performance)
+>     percentage of CPU and MB of memory reserved for Proxmox to maintain system stability and performance)
 
 
 ## **Summary**
@@ -42,26 +42,26 @@ Below is a list of available configuration snippets. Click on any link to jump d
 18. [Trilium Notes](#trilium-notes-configuration)
 19. [Vaultwarden](#vaultwarden-configuration)
 20. [PhotoPrism](#photoprism-configuration)
-21. [Ghost](#ghost-configuration)
-22. [Miniflux](#miniflux-configuration)
-23. [Trilium Notes](#trilium-notes-configuration)
-24. [Vaultwarden](#vaultwarden-configuration)
-25. [PhotoPrism](#photoprism-configuration)
-26. [Ampache](#ampache-configuration)
-27. [OpenProject](#openproject-configuration)
-28. [Kanboard](#kanboard-configuration)
-29. [Etherpad](#etherpad-configuration)
-30. [MediaGoblin](#mediagoblin-configuration)
-31. [Tiny Tiny RSS](#tiny-tiny-rss-configuration)
-32. [Redmine](#redmine-configuration)
-33. [Seafile](#seafile-configuration)
-34. [Wallabag](#wallabag-configuration)
-35. [Rocket.Chat](#rocketchat-configuration)
-36. [Paperwork](#paperwork-configuration)
-37. [Diaspora](#diaspora-configuration)
-38. [Limesurvey](#limesurvey-configuration)
-39. [Paperless](#paperless-configuration)
-40. [Matomo](#matomo-configuration)
+21. [Ampache](#ampache-configuration)
+22. [OpenProject](#openproject-configuration)
+23. [Kanboard](#kanboard-configuration)
+24. [Etherpad](#etherpad-configuration)
+25. [MediaGoblin](#mediagoblin-configuration)
+26. [Tiny Tiny RSS](#tiny-tiny-rss-configuration)
+27. [Redmine](#redmine-configuration)
+28. [Seafile](#seafile-configuration)
+29. [Wallabag](#wallabag-configuration)
+30. [Rocket.Chat](#rocketchat-configuration)
+31. [Paperwork](#paperwork-configuration)
+32. [Diaspora](#diaspora-configuration)
+33. [Limesurvey](#limesurvey-configuration)
+34. [Nextcloud Talk](#nextcloud-talk-configuration)
+35. [Firefly III](#firefly-iii-configuration)
+36. [Shaarli](#shaarli-configuration)
+37. [Monica](#monica-configuration)
+38. [Freshrss](#freshrss-configuration)
+39. [Invoice Ninja](#invoice-ninja-configuration)
+40. [Listmonk](#listmonk-configuration)
 
 ## **Configuration Snippets**
 

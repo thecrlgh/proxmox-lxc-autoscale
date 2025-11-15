@@ -33,6 +33,21 @@ LXC AutoScale is packed with features that make it an essential tool for managin
 
 ## Quick Start
 
+### Prerequisites
+
+Before installing LXC AutoScale, ensure you have:
+
+- **Proxmox VE 8.x** (tested with 8.3.3) running on your host
+- **Python 3.6+** installed on the system
+- **Root or sudo access** to the Proxmox host
+- **LXC containers** already created and configured
+- **Internet connection** for downloading the installation script
+
+> [!IMPORTANT]
+> LXC AutoScale requires LXCFS to be properly configured. See the LXCFS configuration section below for details.
+
+### Installation
+
 Getting started with LXC AutoScale on your Proxmox host is quick and simple:
 
 ```bash
@@ -48,8 +63,10 @@ curl -sSL https://raw.githubusercontent.com/fabriziosalmi/proxmox-lxc-autoscale/
 
 If the conditions set in the configuration are met, you will quickly observe scaling operations in action.
 
+### LXCFS Configuration (Important)
+
 > [!IMPORTANT]
-> You need to check your `/lib/systemd/system/lxcfs.service` file for the presence of the `-l` option which makes `loadavg` retrieval working as expected. Here the required configuration:
+> You need to check your `/lib/systemd/system/lxcfs.service` file for the presence of the `-l` option which makes `loadavg` retrieval work as expected. Here is the required configuration:
 >
 > ```
 > [Unit]
@@ -73,9 +90,9 @@ If the conditions set in the configuration are met, you will quickly observe sca
 > WantedBy=multi-user.target
 > ```
 > 
-> Just update the `/lib/systemd/system/lxcfs.service` file, execute `systemctl daemon-reload && systemctl restart lxcfs` and when you are ready to apply the fix restart the LXC containers.
+> Just update the `/lib/systemd/system/lxcfs.service` file, execute `systemctl daemon-reload && systemctl restart lxcfs`, and when you are ready to apply the fix, restart the LXC containers.
 > 
-> _Tnx to No-Pen9082 to point me out to that. [Here](https://forum.proxmox.com/threads/lxc-containers-shows-hosts-load-average.45724/page-2) the Proxmox forum thread on the topic._
+> _Thanks to No-Pen9082 for pointing this out. [Here](https://forum.proxmox.com/threads/lxc-containers-shows-hosts-load-average.45724/page-2) is the Proxmox forum thread on the topic._
 
 ## Configuration
 
@@ -113,7 +130,7 @@ If You like my projects, you may also like these ones:
 - [blacklists](https://github.com/fabriziosalmi/blacklists) Hourly updated domains blacklist 🚫 
 - [proxmox-vm-autoscale](https://github.com/fabriziosalmi/proxmox-vm-autoscale) Automatically scale virtual machines resources on Proxmox hosts 
 - [UglyFeed](https://github.com/fabriziosalmi/UglyFeed) Retrieve, aggregate, filter, evaluate, rewrite and serve RSS feeds using Large Language Models for fun, research and learning purposes 
-- [DevGPT](https://github.com/fabriziosalmi/DevGPT) Code togheter, right now! GPT powered code assistant to build project in minutes
+- [DevGPT](https://github.com/fabriziosalmi/DevGPT) Code together, right now! GPT powered code assistant to build project in minutes
 - [websites-monitor](https://github.com/fabriziosalmi/websites-monitor) Websites monitoring via GitHub Actions (expiration, security, performances, privacy, SEO)
 - [caddy-mib](https://github.com/fabriziosalmi/caddy-mib) Track and ban client IPs generating repetitive errors on Caddy 
 - [zonecontrol](https://github.com/fabriziosalmi/zonecontrol) Cloudflare Zones Settings Automation using GitHub Actions 

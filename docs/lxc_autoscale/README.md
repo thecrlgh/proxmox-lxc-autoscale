@@ -140,7 +140,7 @@ The configuration file uses a YAML format to define various settings. Below is a
 
 ```yaml
 # Default configuration values
-DEFAULTS:
+DEFAULT:
   # Log file path
   log_file: /var/log/lxc_autoscale.log
   # Lock file path
@@ -272,7 +272,7 @@ TIER_TEST:
 - **Usage Scenario**: You might use a tier like `TIER_TEST` for non-critical containers or testing environments. This tier allows these containers to use more resources when needed but also scales them down aggressively to free up resources for other critical containers.
 
 > [!TIP]
-> For more configuration examples check the [TIER collection](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/blob/main/docs/lxc_autoscale/examples/README.md) with 40   snippets customized to fit minimal and recommended requirements for the most popular self-hosted applications.
+> For more configuration examples check the [TIER collection](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/blob/main/docs/lxc_autoscale/examples/README.md) with 40 snippets customized to fit minimal and recommended requirements for the most popular self-hosted applications.
 
 ### Horizontal Scaling Group (Optional)
 

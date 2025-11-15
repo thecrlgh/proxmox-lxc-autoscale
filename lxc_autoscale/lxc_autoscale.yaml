@@ -1,5 +1,5 @@
 # Default configuration values
-DEFAULTS:
+DEFAULT:
   log_file: /var/log/lxc_autoscale.log
   lock_file: /var/lock/lxc_autoscale.lock
   backup_dir: /var/lib/lxc_autoscale/backups
