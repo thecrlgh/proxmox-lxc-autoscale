@@ -14,8 +14,9 @@
   - [Horizontal Scaling Group (Optional)](#horizontal-scaling-group-optional)
 - **[Service Management](#service-management)**: Commands to start, stop, and manage the LXC AutoScale service.
 - **[Logging](#logging)**: Instructions for accessing and interpreting LXC AutoScale logs.
-- **[Notifications](#notifications)**: How to configure the notifications for endpoints like e-mail, Gotify or Uptime Kuma.
+- **[Notifications](#notifications)**: How to configure notifications for endpoints like email, Gotify, or Uptime Kuma.
 - **[Uninstallation](#uninstallation)**: Steps to remove LXC AutoScale from your system.
+- **[Troubleshooting](#troubleshooting)**: Common issues and their solutions.
 - **[Use Cases](#use-cases)**: Examples of how LXC AutoScale can be used in homelab and self-hosting environments.
 - **[Examples](examples/README.md)**: TIER defined snippets for 40 popular self-hosted applications.
 - **[Best Practices and Tips](#best-practices-and-tips)**: Recommendations for optimal configuration and usage.
@@ -42,32 +43,56 @@ git clone https://github.com/fabriziosalmi/proxmox-lxc-autoscale.git
 cd proxmox-lxc-autoscale/lxc_autoscale
 ```
 
-### Step 3: Build the Docker Image
+### Step 3: Configure Environment Variables (Optional)
+
+If you're using environment variables instead of YAML configuration, copy the example file and configure it:
+
+```bash
+cp .env.example .env
+nano .env  # Edit with your settings
+```
+
+> [!WARNING]
+> Never commit `.env` files containing passwords or sensitive information to version control.
+
+### Step 4: Build the Docker Image
 
 ```bash
 docker build -t lxc-autoscale .
 ```
 
-### Step 4: Edit the YAML Configuration
+### Step 5: Edit the YAML Configuration
 
-Modify the YAML configuration file (e.g., `lxc_autoscale.yaml`) with the Proxmox hosts SSH parameters and the required `use_remote_proxmox` option to make the app execute commands to remote hosts:
+Modify the YAML configuration file (`lxc_autoscale.yaml`) with the Proxmox host SSH parameters and the required `use_remote_proxmox` option to make the application execute commands on remote hosts:
 
+```yaml
+use_remote_proxmox: true
+ssh_user: "your-ssh-username"
+ssh_password: "your-ssh-password"
+proxmox_host: "your-proxmox-host-ip-or-hostname"
+ssh_port: 22
 ```
-  use_remote_proxmox: true
-  ssh_user: "your-ssh-username"
-  ssh_password: "your-ssh-password"
-  proxmox_host: "your-proxmox-host-ip-or-hostname"
-```
+
+> [!TIP]
+> For better security, use SSH keys instead of passwords by setting `ssh_key_path` and leaving `ssh_password` empty.
   
-### Step 5: Run the Docker Container
+### Step 6: Run the Docker Container
 
-- **Using the Default Configuration:**
+**Using the Default Configuration:**
 
 ```bash
 docker run -d --name lxc_autoscale lxc-autoscale
 ```
 
-### Step 6: Check Docker Logs
+**Using a Custom Configuration File:**
+
+```bash
+docker run -d --name lxc_autoscale \
+  -v /path/to/your/lxc_autoscale.yaml:/app/lxc_autoscale.yaml \
+  lxc-autoscale
+```
+
+### Step 7: Check Docker Logs
 
 ```bash
 docker logs lxc_autoscale
@@ -140,7 +165,7 @@ The configuration file uses a YAML format to define various settings. Below is a
 
 ```yaml
 # Default configuration values
-DEFAULTS:
+DEFAULT:
   # Log file path
   log_file: /var/log/lxc_autoscale.log
   # Lock file path
@@ -272,7 +297,7 @@ TIER_TEST:
 - **Usage Scenario**: You might use a tier like `TIER_TEST` for non-critical containers or testing environments. This tier allows these containers to use more resources when needed but also scales them down aggressively to free up resources for other critical containers.
 
 > [!TIP]
-> For more configuration examples check the [TIER collection](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/blob/main/docs/lxc_autoscale/examples/README.md) with 40   snippets customized to fit minimal and recommended requirements for the most popular self-hosted applications.
+> For more configuration examples check the [TIER collection](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/blob/main/docs/lxc_autoscale/examples/README.md) with 40 snippets customized to fit minimal and recommended requirements for the most popular self-hosted applications.
 
 ### Horizontal Scaling Group (Optional)
 
@@ -286,14 +311,20 @@ HORIZONTAL_SCALING_GROUP_1:
   min_instances: 2
   max_instances: 5
   starting_clone_id: 99000
-  clone_network_type: "static"                               # or "dhcp", in that case better to set static_ip_range: []
-  static_ip_range: ["192.168.100.195", "192.168.100.200"]    # if you enabled dhcp for clones set static_ip_range: []
+  clone_network_type: "static"  # Options: "static" or "dhcp"
+  static_ip_range: ["192.168.100.195", "192.168.100.200"]  # Leave empty [] if using DHCP
   horiz_cpu_upper_threshold: 95
   horiz_memory_upper_threshold: 95
   group_tag: "horiz_scaling_group_1"
   lxc_containers: 
-  - 101
+    - 101
 ```
+
+> [!WARNING]
+> Horizontal scaling is an experimental feature. Test it thoroughly in a non-production environment before using it in production.
+
+> [!NOTE]
+> If using DHCP for network configuration, set `clone_network_type: "dhcp"` and `static_ip_range: []`.
 
 - **Usage Scenario**: This feature is ideal for homelab users running a web service that experiences fluctuating traffic. When traffic spikes, LXC AutoScale can clone additional instances of the service, ensuring availability without manual intervention.
 
@@ -364,20 +395,30 @@ Understanding the logs can help you fine-tune LXC AutoScale’s configuration. F
 
 ### Notifications
 
-Notifications on scaling events can be sent to one or more endpoints like E-Mail, Gotify and Uptime Kuma (push webhook). Change options accordingly with your setup in the `/etc/lxc_autoscale/lxc_autoscale.yaml` configuration file:
+Notifications on scaling events can be sent to one or more endpoints like Email, Gotify, and Uptime Kuma (push webhook). Configure these options in your `/etc/lxc_autoscale/lxc_autoscale.yaml` configuration file:
 
+```yaml
+# Gotify Configuration
+gotify_url: 'http://gotify-host'
+gotify_token: 'YOUR_GOTIFY_TOKEN'
+
+# Email (SMTP) Configuration
+smtp_server: 'smtp.example.com'
+smtp_port: 587
+smtp_username: 'your-username'
+smtp_password: 'your-password'
+smtp_from: 'lxc-autoscale@yourdomain.com'
+smtp_to:
+  - 'admin@yourdomain.com'
+  - 'alerts@yourdomain.com'
+
+# Uptime Kuma Webhook Configuration
+uptime_kuma_webhook_url: 'http://uptime-kuma-host:3001/api/push/YOUR_PUSH_ID?status=up&msg=OK&ping='
 ```
-  gotify_url: 'http://gotify-host'
-  gotify_token: 'XXXXXXXXXX'
-  smtp_server: 'live.smtp.mailtrap.io'
-  smtp_port: 587
-  smtp_username: 'api'
-  smtp_password: 'XXXXXXXXXXXXXXXXXXXXXX'
-  smtp_from: 'mailtrap@yourdomain.com'
-  smtp_to:
-    - 'fabrizio.salmi@gmail.com'
-  uptime_kuma_webhook_url: 'http://uptime-kuma-host:3001/api/push/XXXXXXXXX?status=up&msg=OK&ping='
-```
+
+> [!TIP]
+> You can enable one, multiple, or all notification methods. Leave the configuration empty or remove it if you don't want to use a specific notification method.
+
 
 
 ## Uninstallation
@@ -420,6 +461,92 @@ systemctl daemon-reload
 ```
 
 This will completely remove the service and all associated files from your system.
+
+---
+
+## Troubleshooting
+
+### Service Won't Start
+
+If the service fails to start:
+
+1. **Check the configuration file syntax**:
+   ```bash
+   python3 -c "import yaml; yaml.safe_load(open('/etc/lxc_autoscale/lxc_autoscale.yaml'))"
+   ```
+   If there's a YAML syntax error, it will be displayed.
+
+2. **Verify Python dependencies**:
+   ```bash
+   pip3 install -r /usr/local/bin/lxc_autoscale/requirements.txt
+   ```
+
+3. **Check the service logs**:
+   ```bash
+   journalctl -u lxc_autoscale.service -n 50
+   ```
+
+### Scaling Operations Not Working
+
+If containers are not being scaled:
+
+1. **Verify containers are running**:
+   ```bash
+   pct list
+   ```
+
+2. **Check if containers are in the ignore list**: Review the `ignore_lxc` setting in `/etc/lxc_autoscale/lxc_autoscale.yaml`
+
+3. **Verify LXCFS is configured correctly**: See the LXCFS configuration section in the main README
+
+4. **Check resource thresholds**: Ensure thresholds are set appropriately in your configuration
+
+### High CPU Usage by LXC AutoScale
+
+If LXC AutoScale is consuming too many resources:
+
+1. **Increase the poll interval**: Set a higher value for `poll_interval` in the configuration (e.g., 600 seconds instead of 300)
+
+2. **Reduce the number of monitored containers**: Add less critical containers to the `ignore_lxc` list
+
+### Permission Errors
+
+If you see permission denied errors:
+
+1. **Verify the service is running as root**: Check the service file at `/etc/systemd/system/lxc_autoscale.service`
+
+2. **Check file permissions**:
+   ```bash
+   ls -la /etc/lxc_autoscale/
+   ls -la /var/log/lxc_autoscale.log
+   ```
+
+### Configuration Changes Not Taking Effect
+
+After modifying the configuration:
+
+1. **Restart the service**:
+   ```bash
+   systemctl restart lxc_autoscale.service
+   ```
+
+2. **Verify the service reloaded successfully**:
+   ```bash
+   systemctl status lxc_autoscale.service
+   ```
+
+### Remote Execution Issues
+
+If using remote execution via SSH:
+
+1. **Verify SSH connectivity**:
+   ```bash
+   ssh -p <port> <user>@<proxmox_host> "pct list"
+   ```
+
+2. **Check SSH credentials**: Ensure `ssh_user`, `ssh_password` (or `ssh_key_path`), and `proxmox_host` are correctly set in the configuration
+
+3. **Verify `use_remote_proxmox` is set to true** in the configuration file
 
 ---
 
