@@ -1,6 +1,6 @@
 # 🚀 LXC AutoScale
 
-**LXC AutoScale** is a resource management daemon specifically designed for Proxmox environments. It automatically adjusts CPU and memory allocations with no downtime and can clone LXC containers based on real-time usage metrics and predefined thresholds. Can be run locally or remotely to make your containers always optimized for performance, managing spikes in demand, and optionally preserving resources during off-peak hours. 
+**LXC AutoScale** is a resource management daemon specifically designed for Proxmox environments. It automatically adjusts CPU and memory allocations with no downtime and can clone LXC containers based on real-time usage metrics and predefined thresholds. It can be run locally or remotely to keep your containers optimized for performance, manage spikes in demand, and optionally preserve resources during off-peak hours. 
 
 - **✅ Works with `Proxmox 8.3.3`** 
 
@@ -9,7 +9,7 @@
 | Method           | Instructions                                                                                                   |
 |------------------|----------------------------------------------------------------------------------------------------------------|
 | 🐳    | [Docker](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/blob/main/docs/lxc_autoscale/README.md#docker) |
-| 🐧    | [no Docker](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/blob/main/README.md#quick-start) |
+| 🐧    | [No Docker](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/blob/main/README.md#quick-start) |
 
 ## Features
 LXC AutoScale is packed with features that make it an essential tool for managing the auto-scaling of your LXC containers on Proxmox:
@@ -29,7 +29,7 @@ LXC AutoScale is packed with features that make it an essential tool for managin
 - 🐳 Docker supported
 
 > [!NOTE]
-> If You need to autoscale Virtual Machines resources on Proxmox hosts You will like [this project](https://github.com/fabriziosalmi/proxmox-vm-autoscale).
+> If you need to autoscale Virtual Machine resources on Proxmox hosts, you will like [this project](https://github.com/fabriziosalmi/proxmox-vm-autoscale).
 
 ## Quick Start
 
