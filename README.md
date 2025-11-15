@@ -99,19 +99,52 @@ If the conditions set in the configuration are met, you will quickly observe sca
 LXC AutoScale is designed to be highly customizable. You can reconfigure the service at any time to better suit your specific needs. For detailed instructions on how to adjust the settings, please refer to the **[official documentation](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/blob/main/docs/lxc_autoscale/README.md)**.
 
 > [!TIP]
-> If You need LXC AutoScale configuration for all your LXC containers You can automatically generate it by running this command:
-> ```
+> If you need LXC AutoScale configuration for all your LXC containers, you can automatically generate it by running this command:
+> ```bash
 > curl -sSL https://raw.githubusercontent.com/fabriziosalmi/proxmox-lxc-autoscale/main/lxc_autoscale/lxc_autoscale_autoconf.sh | bash
 > ```
 
-### Additional resources
-LXC AutoScale and LXC AutoScale ML can be used and extended in many ways, here some useful additional resources:
+### Additional Resources
+
+LXC AutoScale can be used and extended in many ways. Here are some useful additional resources:
 
 - 🌐 [LXC AutoScale UI - Simple web UI to check scaling actions and logs](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/tree/main/lxc_autoscale/ui)
 - 🎛️ [LXC AutoScale - TIER snippets for 40 self-hosted apps](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/blob/main/docs/lxc_autoscale/examples/README.md)
 
 > [!TIP]
-> LXC AutoScale ML has been finally moved to a new, separate [repository](https://github.com/fabriziosalmi/proxmox-lxc-autoscale-ml).
+> LXC AutoScale ML has been moved to a separate [repository](https://github.com/fabriziosalmi/proxmox-lxc-autoscale-ml).
+
+## Frequently Asked Questions
+
+### Can I use this on Proxmox 7.x?
+
+LXC AutoScale is tested on Proxmox VE 8.3.3. While it may work on older versions, compatibility is not guaranteed. We recommend using Proxmox VE 8.x for the best experience.
+
+### Will this work with my existing containers?
+
+Yes! LXC AutoScale works with existing LXC containers. Just configure the container IDs in the YAML file, and the service will start managing them.
+
+### Does this support virtual machines (VMs)?
+
+No, LXC AutoScale is specifically designed for LXC containers. For VM autoscaling, check out [proxmox-vm-autoscale](https://github.com/fabriziosalmi/proxmox-vm-autoscale).
+
+### Can I run this remotely?
+
+Yes! You can run LXC AutoScale on a separate machine and connect to your Proxmox host via SSH. Set `use_remote_proxmox: true` in the configuration and provide SSH credentials.
+
+### Is it safe to use in production?
+
+LXC AutoScale includes safety features like backups before changes and rollback capabilities. However, we recommend thoroughly testing it in a non-production environment first to understand how it behaves with your workload.
+
+### How often does it check container resources?
+
+The default polling interval is 300 seconds (5 minutes), but you can adjust this with the `poll_interval` setting in the configuration.
+
+### Can I exclude certain containers from autoscaling?
+
+Yes, add container IDs to the `ignore_lxc` list in the configuration file, and they will be excluded from autoscaling.
+
+For more detailed questions and answers, see the [Q&A documentation](https://github.com/fabriziosalmi/proxmox-lxc-autoscale/blob/main/docs/q%26a/README.md).
 
 ## Contributing
 
@@ -121,9 +154,9 @@ LXC AutoScale is an open-source project, and contributions are welcome! Whether 
 - Submit a pull request to the repository.
 - Fork the repository to experiment and develop your custom features.
 
-## Others projects
+## Other Projects
 
-If You like my projects, you may also like these ones:
+If you like this project, you may also like these:
 
 - [caddy-waf](https://github.com/fabriziosalmi/caddy-waf) Caddy WAF (Regex Rules, IP and DNS filtering, Rate Limiting, GeoIP, Tor, Anomaly Detection) 
 - [patterns](https://github.com/fabriziosalmi/patterns) Automated OWASP CRS and Bad Bot Detection for Nginx, Apache, Traefik and HaProxy
